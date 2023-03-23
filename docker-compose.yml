@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  trouwsite-app:
+    container_name: trouwsite-app
+    restart: always
+    build: ./trouwsite-app
+    ports:
+      - "8000:8000"
+    command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:app
+  
+  nginx:
+    container_name: nginx
+    restart: always
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - trouwsite-app 
